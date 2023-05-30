@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('views_count')->default(0);
             $table->unsignedBigInteger('answers_count')->default(0);
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('best_answer_id')->nullable;
+            $table->unsignedBigInteger('best_answer_id')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')
