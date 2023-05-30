@@ -21,4 +21,20 @@ class Question extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function getUrlAttribute() {
+        return "/questions/$this->id";
+    }
+    public function getCreatedDateAttribute() {
+        return $this->created_at->diffForHumans();
+    }
+
+    public function getAnswerStylesAttribute() {
+        if($this->answers_count > 0) {
+            if($this->best_answer_id) {
+                return 'has-best-answer';
+            }
+            return 'answered';
+        }
+        return 'unanswered';
+    }
 }
