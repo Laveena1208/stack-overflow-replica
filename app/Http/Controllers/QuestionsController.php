@@ -56,4 +56,12 @@ class QuestionsController extends Controller
         session()->flash('success', 'Question has been deleted successfully!');
         return redirect(route('questions.index'));
     }
+
+    public function show(Question $question)
+    {
+        $question->increment('views_count');
+        return view('questions.show', compact([
+            'question'
+        ]));
+    }
 }

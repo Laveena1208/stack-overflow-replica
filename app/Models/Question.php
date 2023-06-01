@@ -22,7 +22,7 @@ class Question extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
     public function getUrlAttribute() {
-        return "/questions/$this->id";
+        return "/questions/$this->slug";
     }
     public function getCreatedDateAttribute() {
         return $this->created_at->diffForHumans();
