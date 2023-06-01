@@ -74,7 +74,7 @@
         </nav>
 
         <div class="container mt-3">
-            @include('layouts._alert_messages');
+            @include('layouts._alert_messages')
         </div>
 
         <main class="py-4">
