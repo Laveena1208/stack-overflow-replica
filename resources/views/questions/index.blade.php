@@ -7,12 +7,14 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
-                        <div> <h1>All Questions</h1></div>
-                        <div class = "align-self-center mb-2">
-                            <a href="{{route('questions.create') }}" class="btn btn-warning"> Ask a Question</a>
+                        <div>
+                            <h1>All Questions</h1>
+                        </div>
+                        <div class="align-self-center mb-2">
+                            <a href="{{ route('questions.create') }}" class="btn btn-warning"> Ask a Question</a>
                         </div>
                     </div>
-                    @foreach($questions as $question)
+                    @foreach ($questions as $question)
                         <div class="card-body">
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0 statistics">
@@ -31,9 +33,17 @@
                                         <h4>
                                             <a href="{{ $question->url }}">{{ $question->title }}</a>
                                         </h4>
-                                        <a href="{{ route('questions.edit', $question->id) }}" class="btn btn-outline-info">Edit</a>
-                                    </div>
+                                        <div class="d-flex">
+                                            <a href="{{ route('questions.edit', $question->id) }}"
+                                                class="btn btn-outline-info btn-sm me-2">Edit</a>
 
+                                            <form action="{{ route('questions.destroy', $question->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
                                     <p>
                                         Asked By: <a href="#">{{ $question->owner->name }}</a>
                                         <span class="text-muted">{{ $question->created_date }}</span>

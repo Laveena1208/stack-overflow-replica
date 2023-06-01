@@ -9,7 +9,7 @@ use App\Models\Question;
 class QuestionsController extends Controller
 {
     public function __construct() {
-        $this->middleware(['auth'])->only(['create', 'store']);
+        $this->middleware(['auth'])->only(['create', 'store','edit','update']);
     }
     public function index()
     {
@@ -47,6 +47,13 @@ class QuestionsController extends Controller
         ]);
 
         session()->flash('success', 'Question has been updated successfully!');
+        return redirect(route('questions.index'));
+    }
+
+    public function destroy(Question $question)
+    {
+        $question->delete();
+        session()->flash('success', 'Question has been deleted successfully!');
         return redirect(route('questions.index'));
     }
 }
