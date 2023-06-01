@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateQuestionRequest;
 use App\Http\Requests\UpdateQuestionRequest;
 use App\Models\Question;
+use Illuminate\Support\Facades\Gate;
 
 class QuestionsController extends Controller
 {
@@ -34,31 +35,41 @@ class QuestionsController extends Controller
     }
     public function edit(Question $question)
     {
-        return view('questions.edit', compact([
-            'question'
-        ]));
+        if(Gate::allows('update-question', $question)){
+            return view('questions.edit', compact([
+                'question'
+            ]));
+        }
+        abort(403);
+
     }
 
     public function update(UpdateQuestionRequest $request, Question $question)
     {
-        $question->update([
-            'title'=>$request->title,
-            'body'=>$request->body
-        ]);
+        if(Gate::allows('update-question', $question)){$question->update([
+                'title'=>$request->title,
+                'body'=>$request->body
+            ]);
+            session()->flash('success', 'Question has been updated successfully!');
+            return redirect(route('questions.index'));
+        }
+        abort(403);
 
-        session()->flash('success', 'Question has been updated successfully!');
-        return redirect(route('questions.index'));
     }
 
     public function destroy(Question $question)
     {
-        $question->delete();
-        session()->flash('success', 'Question has been deleted successfully!');
-        return redirect(route('questions.index'));
+        if(auth()->user()->can('delete-question',$question)){
+            $question->delete();
+            session()->flash('success', 'Question has been deleted successfully!');
+            return redirect(route('questions.index'));
+        }
+        abort(403);
     }
 
     public function show(Question $question)
     {
+
         $question->increment('views_count');
         return view('questions.show', compact([
             'question'
