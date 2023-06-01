@@ -33,9 +33,23 @@ class QuestionsController extends Controller
         session()->flash('success', 'Question has been added successfully!');
         return redirect(route('questions.index'));
     }
+
+    //Gate Method
+    // public function edit(Question $question)
+    // {
+    //     if(Gate::allows('update-question', $question)){
+    //         return view('questions.edit', compact([
+    //             'question'
+    //         ]));
+    //     }
+    //     abort(403);
+
+    // }
+
     public function edit(Question $question)
     {
-        if(Gate::allows('update-question', $question)){
+        if($this->authorize('update', $question))
+        {
             return view('questions.edit', compact([
                 'question'
             ]));
@@ -44,9 +58,24 @@ class QuestionsController extends Controller
 
     }
 
+    // Gate Method:-
+    // public function update(UpdateQuestionRequest $request, Question $question)
+    // {
+    //     if(Gate::allows('update-question', $question)){$question->update([
+    //             'title'=>$request->title,
+    //             'body'=>$request->body
+    //         ]);
+    //         session()->flash('success', 'Question has been updated successfully!');
+    //         return redirect(route('questions.index'));
+    //     }
+    //     abort(403);
+
+    // }
+
     public function update(UpdateQuestionRequest $request, Question $question)
     {
-        if(Gate::allows('update-question', $question)){$question->update([
+        if($this->authorize('update', $question)){
+            $question->update([
                 'title'=>$request->title,
                 'body'=>$request->body
             ]);
@@ -57,9 +86,21 @@ class QuestionsController extends Controller
 
     }
 
+    // Gate method:-
+    // public function destroy(Question $question)
+    // {
+    //     if(auth()->user()->can('delete-question',$question)){
+    //         $question->delete();
+    //         session()->flash('success', 'Question has been deleted successfully!');
+    //         return redirect(route('questions.index'));
+    //     }
+    //     abort(403);
+    // }
+
+
     public function destroy(Question $question)
     {
-        if(auth()->user()->can('delete-question',$question)){
+        if($this->authorize('delete',$question)){
             $question->delete();
             session()->flash('success', 'Question has been deleted successfully!');
             return redirect(route('questions.index'));
