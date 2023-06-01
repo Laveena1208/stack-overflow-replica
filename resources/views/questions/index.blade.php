@@ -34,16 +34,32 @@
                                             <a href="{{ $question->url }}">{{ $question->title }}</a>
                                         </h4>
                                         <div class="d-flex">
-                                            @if (auth()->user()->can('update-question', $question))
+                                            {{-- Gate Method:- --}}
+                                            {{-- @if (auth()->user()->can('update-question', $question))
                                                 <a href="{{ route('questions.edit', $question->id) }}"
                                                     class="btn btn-outline-info btn-sm me-2">Edit</a>
-                                            @endif
-                                            @can('delete-question', $question)
+                                            @endif --}}
+                                            @can('update', $question)
+                                                <a href="{{ route('questions.edit', $question->id) }}"
+                                                    class="btn btn-outline-info btn-sm me-2">Edit</a>
+                                            @endcan
+
+                                            {{-- Gate Method:- --}}
+                                            {{-- @can('delete-question', $question)
                                                 <form action="{{ route('questions.destroy', $question->id) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
                                                 </form>
+                                            @endcan --}}
+
+
+                                            @can('delete', $question)
+                                            <form action="{{ route('questions.destroy', $question->id) }}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-outline-danger btn-sm">Delete</button>
+                                            </form>
                                             @endcan
 
                                         </div>
