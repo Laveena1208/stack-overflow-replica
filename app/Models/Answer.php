@@ -15,6 +15,10 @@ class Answer extends Model
         static::created(function(Answer $answer){
             $answer->question->increment('answers_count');//used to solve RACE Condition problem(instead of c++)
         });
+
+        static::deleted(function(Answer $answer){
+            $answer->question->decrement('answers_count');//used to solve RACE Condition problem(instead of c++)
+        });
     }
 
     public function question()
@@ -30,5 +34,10 @@ class Answer extends Model
     public function getCreatedDateAttribute()
     {
         return $this->created_at->diffForHumans();
+    }
+
+    public function getBestAnswerStyleAttribute(Question $question)
+    {
+        return $this->id === $question->best_answer_id ? 'text-success' : 'text-dark';
     }
 }
