@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateAnswerRequest;
+use App\Http\Requests\MarkAsBestRequest;
 use App\Http\Requests\UpdateAnswerRequest;
 use App\Models\Answer;
 use App\Models\Question;
@@ -39,5 +40,25 @@ class AnswersController extends Controller
         session()->flash('success', 'Answer has been updated successfully!');
         return redirect($question->url);
 
+    }
+
+    // public function destroy(Question $question, Answer $answer)
+    // {
+    //     $this->authorize('delete',$answer);
+    //     $answer->delete();
+    //     session()->flash('success', 'Answer has been deleted successfully!');
+    //     return redirect(route('questions.index'));
+    // }
+
+
+    public function markAsBest(MarkAsBestRequest $request, Question $question , Answer $answer)
+    {
+        $this->authorize('markAsBest', $question);
+        if($answer->question->id != $question->id){
+            abort(403);
+        }
+
+        $question->markAsBest($answer);
+        return redirect()->back();
     }
 }
