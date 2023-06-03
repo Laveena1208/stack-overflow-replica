@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\Answer;
+use App\Models\Question;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -43,9 +44,9 @@ class AnswerPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Answer $answer): bool
+    public function delete(User $user, Answer $answer, Question $question): bool
     {
-        return $user->id === $answer->user_id;
+        return $user->id === $answer->user_id && $question->best_answer_id !== $answer->id;
     }
 
     /**
