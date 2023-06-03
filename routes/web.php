@@ -26,4 +26,4 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::resource('questions', QuestionsController ::class)->except('show');
 Route::get('/questions/{slug}', [App\Http\Controllers\QuestionsController::class, 'show'])->name('questions.show');
 Route::resource('questions.answers', AnswersController::class)->except('create', 'show');
-// Route::put('questions/{}/questions.answers/{}', AnswersController::class);
+Route::put('/questions/{question}/answers/{answer}/mark-as-best', [App\Http\Controllers\AnswersController::class,'markAsBest'])->name('questions.answers.markAsBest');
