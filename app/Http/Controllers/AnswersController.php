@@ -42,19 +42,19 @@ class AnswersController extends Controller
 
     }
 
-    // public function destroy(Question $question, Answer $answer)
-    // {
-    //     $this->authorize('delete',$answer);
-    //     $answer->delete();
-    //     session()->flash('success', 'Answer has been deleted successfully!');
-    //     return redirect(route('questions.index'));
-    // }
+    public function destroy(Question $question, Answer $answer)
+    {
+        $this->authorize('delete',[$answer, $question]);
+        $answer->delete();
+        session()->flash('success', 'Answer has been deleted successfully!');
+        return redirect()->back();
+    }
 
 
     public function markAsBest(MarkAsBestRequest $request, Question $question , Answer $answer)
     {
         $this->authorize('markAsBest', $question);
-        if($answer->question->id != $question->id){
+        if($answer->question->id !== $question->id){
             abort(403);
         }
 
