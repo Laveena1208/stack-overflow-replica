@@ -12,7 +12,7 @@ class Answer extends Model
     public static function boot(){
         parent::boot();
         static::created(function(Answer $answer){
-            $answer->question->increment('answers_count');
+            $answer->question->increment('answers_count');//used to solve RACE Condition problem(instead of c++)
         });
     }
 
