@@ -47,4 +47,10 @@ class Question extends Model
     {
         $this->update(['best_answer_id'=>$answer->id]);
     }
+
+    public function hasBestAnswer(Answer $answer) :bool
+    {
+        return $this->best_answer_id === $answer->id;
+    }
 }
+
