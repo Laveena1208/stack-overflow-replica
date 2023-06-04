@@ -43,6 +43,11 @@ class Question extends Model
         return $this->hasMany(Answer::class);
     }
 
+    public function votes()
+    {
+        return $this->morphToMany(User::class, 'vote')->withTimestamps();
+    }
+
     public function markAsBest(Answer $answer)
     {
         $this->update(['best_answer_id'=>$answer->id]);
@@ -51,6 +56,22 @@ class Question extends Model
     public function hasBestAnswer(Answer $answer) :bool
     {
         return $this->best_answer_id === $answer->id;
+    }
+
+
+    public function getFavoritesCountAttribute()
+    {
+        return $this->favorites()->count();
+    }
+
+    public function getIsFavoriteAttribute()
+    {
+        return $this->favorites()->where('user_id', auth()->id())->count() > 0;
+    }
+
+    public function favorites()
+    {
+        return $this->belongsToMany(User::class);
     }
 }
 
