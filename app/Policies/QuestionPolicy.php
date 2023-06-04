@@ -46,7 +46,7 @@ class QuestionPolicy
     public function delete(User $user, Question $question): bool
     {
         return $user->id === $question->user_id;
-        
+
     }
 
     /**
@@ -63,5 +63,10 @@ class QuestionPolicy
     public function forceDelete(User $user, Question $question): bool
     {
         //
+    }
+
+    public function markAsBest(User $user, Question $question): bool
+    {
+        return $user->id === $question->user_id;
     }
 }
