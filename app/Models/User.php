@@ -60,4 +60,18 @@ class User extends Authenticatable
 
     }
 
+    public function favorites()
+    {
+        return $this->belongsToMany(Question::class);
+    }
+
+    public function votesQuestion()
+    {
+        return $this->morphedByMany(Question ::class, 'vote')->withTimestamps();
+    }
+
+    public function votesAnswer()
+    {
+        return $this->morphedByMany(Answer ::class, 'vote')->withTimestamps();
+    }
 }
