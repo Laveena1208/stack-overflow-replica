@@ -4,6 +4,7 @@ use App\Http\Controllers\AnswersController;
 use App\Http\Controllers\QuestionsController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Spatie\FlareClient\Api;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,6 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::resource('questions', QuestionsController ::class)->except('show');
 Route::get('/questions/{slug}', [App\Http\Controllers\QuestionsController::class, 'show'])->name('questions.show');
@@ -29,4 +29,6 @@ Route::resource('questions.answers', AnswersController::class)->except('create',
 Route::put('/questions/{question}/answers/{answer}/mark-as-best', [App\Http\Controllers\AnswersController::class,'markAsBest'])->name('questions.answers.markAsBest');
 Route::post('/questions/{question}/mark-as-fav',[App\Http\Controllers\FavoritesController::class, 'store'])->name('questions.mark-as-fav');
 Route::delete('/questions/{question}/mark-as-unfav',[App\Http\Controllers\FavoritesController::class, 'destroy'])->name('questions.mark-as-unfav');
+Route::post('/questions/{question}/vote/{vote}', [App\Http\Controllers\VotesController::class, 'voteQuestion'])->name('questions.vote');
+Route::get('/users/notifications', [App\Http\Controllers\UsersController::class, 'notifications'])->name('users.notifications');
 
