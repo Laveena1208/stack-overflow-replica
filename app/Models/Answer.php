@@ -36,6 +36,33 @@ class Answer extends Model
         return $this->morphToMany(User::class, 'vote')->withTimestamps();
     }
 
+
+    public function vote(int $vote)
+    {
+        $this->votes()->attach(auth()->id(), ['vote'=>$vote]);
+        if($vote <0)
+        {
+            $this->decrement('votes_count');
+        }
+        else
+        {
+            $this->increment('votes_count');
+        }
+    }
+
+
+    public function updateVote(int $vote)
+    {
+        $this->votes()->updateExistingPivot(auth()->id(), ['vote'=>$vote]);
+        if($vote <0)
+        {
+            $this->decrement('votes_count',2);
+        }
+        else
+        {
+            $this->increment('votes_count',2);
+        }
+    }
     public function getCreatedDateAttribute()
     {
         return $this->created_at->diffForHumans();
